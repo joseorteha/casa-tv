@@ -3,6 +3,8 @@
 A small home screen (launcher) for Google TV. Full-screen photo, a dock of apps along the bottom, a second page with
 every app, and a web panel to change wallpapers and the dock from a phone. About 30 KB, plain Android Views, no libraries.
 
+Website: https://casa-tv-site.vercel.app
+
 Tested on one TV only: Motorola Google TV (KTC `jagalchi`, MediaTek, Android 14, 0.9 GB RAM).
 
 - `app/` the Android app (`dev.joseo.casa`, minSdk 26, Java 17)
