@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application>
+        <!-- Debug builds only: starts a fake "playing" media session so the now-playing bar can be checked without an account. -->
+        <activity android:name=".FakePlayerActivity" android:exported="true" android:theme="@android:style/Theme.NoDisplay" />
+    </application>
+</manifest>

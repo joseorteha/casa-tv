@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Casa">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="apple-touch-icon" href="/icon.png">
+<link rel="icon" href="/icon.png">
+<title>Casa</title>
+<style>
+:root{--bg:#0b0f1c;--card:rgba(255,255,255,.07);--line:rgba(255,255,255,.14);--tx:#f4f6fb;--dim:#9aa3b8;--ac:#4d8dff}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{overflow-x:hidden}
+body{margin:0;background:radial-gradient(1200px 600px at 80% -10%,#26357a55,transparent),var(--bg);color:var(--tx);
+  font:16px/1.4 -apple-system,system-ui,"Segoe UI",Roboto,sans-serif;min-height:100vh;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+header{display:flex;align-items:center;justify-content:space-between;padding:18px 16px 6px}
+h1{margin:0;font-size:24px;font-weight:600;letter-spacing:.2px}
+.dot{width:10px;height:10px;border-radius:50%;background:#3ddc84;display:inline-block;margin-right:8px}
+nav{display:flex;gap:6px;padding:8px 16px;position:sticky;top:0;background:linear-gradient(var(--bg),#0b0f1ccc);backdrop-filter:blur(10px);z-index:2}
+nav button{flex:1 1 0;min-width:0;white-space:nowrap;padding:10px 2px;border:1px solid var(--line);border-radius:12px;background:transparent;color:var(--dim);font-size:14px}
+nav button.on{background:var(--card);color:var(--tx);border-color:#ffffff40}
+main{padding:8px 16px 40px;max-width:900px;margin:0 auto}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border-radius:12px;border:1px solid var(--line);
+  background:var(--card);color:var(--tx);font-size:15px}
+.btn:active{background:#ffffff26}
+.btn.pri{background:var(--ac);border-color:transparent;font-weight:600}
+.btn.sm{padding:7px 11px;font-size:13px;border-radius:10px}
+.btn.bad{color:#ff8a8a}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0}
+.row .btn{flex:1 1 auto}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.wp{position:relative;border-radius:14px;overflow:hidden;border:2px solid transparent;background:#000;aspect-ratio:16/9}
+.wp.sel{border-color:var(--ac)}
+.wp img{width:100%;height:100%;object-fit:cover;display:block}
+.wp .bar{position:absolute;left:0;right:0;bottom:0;display:flex;gap:6px;padding:6px;background:linear-gradient(transparent,#000c)}
+.wp .bar .btn{flex:1;padding:6px 0;font-size:12px;background:#000a}
+.tag{position:absolute;top:6px;left:6px;background:var(--ac);border-radius:8px;padding:2px 8px;font-size:11px}
+.li{display:flex;align-items:center;gap:12px;padding:8px 10px;border:1px solid var(--line);background:var(--card);border-radius:14px;margin:8px 0}
+.li img{width:42px;height:42px;border-radius:10px;background:#222}
+.li .n{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+h2{font-size:13px;letter-spacing:.14em;color:var(--dim);text-transform:uppercase;margin:22px 4px 6px;font-weight:600}
+.dim{color:var(--dim);font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin:10px 0}
+.np{display:flex;flex-direction:column;gap:2px;margin-bottom:10px;min-height:44px}
+.np b{font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.big .btn{font-size:24px;padding:16px 0}
+.apps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;text-align:center}
+.apps button{background:none;border:0;color:var(--tx);font-size:11.5px;padding:0;min-width:0}
+.apps img{width:100%;max-width:64px;aspect-ratio:1;border-radius:16px;background:#222;display:block;margin:0 auto 5px}
+.apps span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ol{padding-left:20px}ol li{margin:6px 0}
+code{font:13px ui-monospace,Consolas,monospace;overflow-wrap:anywhere}
+#login{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:var(--bg);z-index:9;padding:24px;text-align:center}
+#login input{font-size:34px;letter-spacing:.4em;text-align:center;width:min(320px,80vw);padding:12px;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--tx)}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#000d;border:1px solid var(--line);padding:10px 16px;border-radius:12px;opacity:0;transition:.25s;pointer-events:none;z-index:10;max-width:90vw}
+#toast.on{opacity:1}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div id="login">
+  <h1>Casa</h1>
+  <div class="dim">Escanea el código QR de la TV<br>o escribe el PIN (pulsa Abajo en el Home)</div>
+  <input id="pin" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="······">
+  <button class="btn pri" id="go">Entrar</button>
+  <div id="err" class="dim" style="color:#ff8a8a"></div>
+</div>
+
+<div id="app" hidden>
+  <header><h1><span class="dot"></span>Casa</h1><button class="btn sm" id="out">Salir</button></header>
+  <nav>
+    <button data-t="control" class="on">Control</button>
+    <button data-t="fondos">Fondos</button>
+    <button data-t="dock">Dock</button>
+    <button data-t="siri">Siri</button>
+  </nav>
+  <main>
+    <section id="t-control">
+      <div class="card">
+        <div class="np"><b id="npT">Nada reproduciéndose</b><span class="dim" id="npA">&nbsp;</span></div>
+        <div class="row big">
+          <button class="btn" data-m="prev">⏮</button>
+          <button class="btn pri" data-m="toggle" id="mt">⏯</button>
+          <button class="btn" data-m="next">⏭</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="row big">
+          <button class="btn" data-v="down">−</button>
+          <button class="btn" data-v="mute" id="vm">🔇</button>
+          <button class="btn" data-v="up">+</button>
+        </div>
+        <div class="dim" id="vol" style="text-align:center"></div>
+      </div>
+      <div class="row">
+        <button class="btn" data-n="home">Inicio</button>
+        <button class="btn" data-n="back">Atrás</button>
+      </div>
+      <h2>Abrir en la TV</h2>
+      <div class="apps" id="appGrid"></div>
+    </section>
+
+    <section id="t-fondos" hidden>
+      <div class="row">
+        <label class="btn pri">+ Subir fotos<input id="file" type="file" accept="image/*" multiple hidden></label>
+        <button class="btn" id="rot">Rotar cada hora</button>
+      </div>
+      <div class="dim" id="wpinfo"></div>
+      <div class="grid" id="wps"></div>
+    </section>
+
+    <section id="t-dock" hidden>
+      <h2>En tu dock</h2>
+      <div id="dockList"></div>
+      <h2>Agregar</h2>
+      <div id="dockAdd"></div>
+    </section>
+
+    <section id="t-siri" hidden>
+      <div class="card">
+        <b>Pídele a Siri que controle la TV</b>
+        <ol class="dim">
+          <li>Abre la app <b>Atajos</b> y toca <b>+</b>.</li>
+          <li>Agrega la acción <b>Obtener contenido de URL</b> y pega una de abajo.</li>
+          <li>Ponle un nombre, por ejemplo «Netflix en la tele». Ya puedes decir «Oye Siri, Netflix en la tele».</li>
+        </ol>
+        <div class="dim">Cada dirección lleva tu PIN: no las compartas. Funcionan solo con el celular conectado a la misma red que la TV.</div>
+      </div>
+      <div id="siriList"></div>
+    </section>
+  </main>
+</div>
+<div id="toast"></div>
+
+<script>
+const qs = new URLSearchParams(location.search);
+let PIN = qs.get('pin') || localStorage.getItem('casa-pin') || '';
+if (qs.get('pin')) history.replaceState(null, '', location.pathname);   // the PIN never stays in the address bar
+let S = null, poll = null;
+const $ = s => document.querySelector(s);
+const q = p => p + (p.includes('?') ? '&' : '?') + 'pin=' + encodeURIComponent(PIN);
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('on'),2200)}
+function el(tag, cls, text){const e=document.createElement(tag); if(cls) e.className=cls; if(text!==undefined) e.textContent=text; return e}
+
+async function api(path, opt){
+  const r = await fetch(q(path), opt);
+  if (r.status === 401) { logout(); throw new Error('pin'); }
+  if (!r.ok) throw new Error('http ' + r.status);
+  return r.json();
+}
+async function load(){ S = await api('/api/state'); render(); }
+function logout(){ localStorage.removeItem('casa-pin'); PIN=''; clearInterval(poll); $('#app').hidden=true; $('#login').hidden=false; }
+async function enter(){
+  PIN = $('#pin').value.trim(); $('#err').textContent='';
+  try { await load(); localStorage.setItem('casa-pin', PIN); $('#login').hidden=true; $('#app').hidden=false; refreshNow(); poll = setInterval(refreshNow, 3000); }
+  catch(e){ $('#err').textContent = 'PIN incorrecto o la TV no responde'; }
+}
+$('#go').onclick = enter;
+$('#pin').addEventListener('keydown', e => { if (e.key==='Enter') enter(); });
+$('#out').onclick = logout;
+
+document.querySelectorAll('nav button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('nav button').forEach(x => x.classList.toggle('on', x===b));
+  ['control','fondos','dock','siri'].forEach(t => $('#t-'+t).hidden = (t !== b.dataset.t));
+});
+
+// ---- control ---------------------------------------------------------------------------------------------------
+function paintNow(n){
+  $('#npT').textContent = n.active ? n.title : 'Nada reproduciéndose';
+  $('#npA').textContent = n.active ? n.artist : ' ';
+  $('#mt').textContent = n.active && n.playing ? '⏸' : '⏯';
+  $('#vol').textContent = 'Volumen ' + n.volume + ' de ' + n.max + (n.muted ? ' · en silencio' : '');
+  $('#vm').textContent = n.muted ? '🔈' : '🔇';
+}
+async function refreshNow(){ try { paintNow(await api('/api/now')); } catch(e){} }
+document.querySelectorAll('[data-m]').forEach(b => b.onclick = async () => { try { paintNow(await api('/api/media?cmd=' + b.dataset.m, {method:'POST'})); } catch(e){} });
+document.querySelectorAll('[data-v]').forEach(b => b.onclick = async () => { try { paintNow(await api('/api/volume?dir=' + b.dataset.v, {method:'POST'})); } catch(e){} });
+document.querySelectorAll('[data-n]').forEach(b => b.onclick = async () => { try { await api('/api/nav?action=' + b.dataset.n, {method:'POST'}); toast(b.textContent); } catch(e){} });
+
+function ico(p){ const i = new Image(); i.loading='lazy'; i.src = q('/api/icon?pkg=' + encodeURIComponent(p)); return i; }
+function renderApps(){
+  const g = $('#appGrid'); g.textContent = '';
+  S.apps.forEach(a => {
+    const b = el('button'); b.append(ico(a.pkg), el('span', '', a.label));
+    b.onclick = async () => { await api('/api/launch?pkg=' + encodeURIComponent(a.pkg), {method:'POST'}); toast('Abriendo ' + a.label); };
+    g.appendChild(b);
+  });
+}
+
+// ---- wallpapers ------------------------------------------------------------------------------------------------
+function renderWallpapers(){
+  const rotating = !S.mode;
+  $('#rot').className = 'btn' + (rotating ? ' pri' : '');
+  $('#wpinfo').textContent = S.wallpapers.length
+    ? (rotating ? 'Rotando entre ' + S.wallpapers.length + ' fotos, una por hora.' : 'Fija: ' + S.mode)
+    : 'Aún no hay fotos. Sube las que quieras.';
+  const g = $('#wps'); g.textContent = '';
+  S.wallpapers.forEach(w => {
+    const d = el('div', 'wp' + (S.mode === w.name ? ' sel' : ''));
+    const im = new Image(); im.loading = 'lazy'; im.src = q('/api/wallpaper/thumb?name=' + encodeURIComponent(w.name)); d.appendChild(im);
+    if (S.mode === w.name) d.appendChild(el('div', 'tag', 'En uso'));
+    const bar = el('div', 'bar');
+    const use = el('button', 'btn', 'Usar');
+    use.onclick = async () => { S = await api('/api/wallpaper/use?name=' + encodeURIComponent(w.name), {method:'POST'}); render(); toast('Fondo cambiado'); };
+    const del = el('button', 'btn bad', 'Borrar');
+    del.onclick = async () => { if (!confirm('¿Borrar esta foto?')) return; S = await api('/api/wallpaper/delete?name=' + encodeURIComponent(w.name), {method:'POST'}); render(); };
+    bar.append(use, del); d.appendChild(bar); g.appendChild(d);
+  });
+}
+$('#rot').onclick = async () => { S = await api('/api/wallpaper/use?name=rotate', {method:'POST'}); render(); toast('Rotando fotos'); };
+
+async function prep(file){
+  // Re-draws the photo upright (iPhone photos carry a rotation flag) and at most 2560 px wide, as JPEG.
+  let bmp;
+  try { bmp = await createImageBitmap(file, {imageOrientation:'from-image'}); }
+  catch(e){ bmp = await new Promise((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = no; i.src = URL.createObjectURL(file); }); }
+  const w = bmp.width || bmp.naturalWidth, h = bmp.height || bmp.naturalHeight;
+  const sc = Math.min(1, 2560 / Math.max(w, h));
+  const c = document.createElement('canvas'); c.width = Math.round(w*sc); c.height = Math.round(h*sc);
+  c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+  return new Promise(r => c.toBlob(r, 'image/jpeg', 0.9));
+}
+$('#file').onchange = async e => {
+  const files = [...e.target.files]; let n = 0;
+  for (const f of files) {
+    toast('Subiendo ' + (++n) + ' de ' + files.length + '…');
+    try { const blob = await prep(f); S = await api('/api/wallpaper?name=' + encodeURIComponent(f.name), {method:'POST', body: blob}); render(); }
+    catch(err){ toast('No pude subir ' + f.name); }
+  }
+  toast('Listo'); e.target.value = '';
+};
+
+// ---- dock ------------------------------------------------------------------------------------------------------
+const label = p => (S.apps.find(a => a.pkg === p) || {label:p}).label;
+async function saveDock(list){ S = await api('/api/dock', {method:'POST', body: JSON.stringify(list)}); render(); toast('Dock guardado'); }
+function renderDock(){
+  const L = $('#dockList'); L.textContent = '';
+  S.dock.forEach((p, i) => {
+    if (!S.apps.some(a => a.pkg === p)) return;
+    const r = el('div', 'li'); const mk = (t, f, cls='') => { const b = el('button', 'btn sm '+cls, t); b.onclick = f; return b; };
+    r.append(ico(p), el('div', 'n', label(p)),
+      mk('↑', () => { if (i>0){ const d=[...S.dock]; [d[i-1],d[i]]=[d[i],d[i-1]]; saveDock(d); } }),
+      mk('↓', () => { if (i<S.dock.length-1){ const d=[...S.dock]; [d[i+1],d[i]]=[d[i],d[i+1]]; saveDock(d); } }),
+      mk('✕', () => saveDock(S.dock.filter(x => x !== p)), 'bad'));
+    L.appendChild(r);
+  });
+  const A = $('#dockAdd'); A.textContent = '';
+  S.apps.filter(a => !S.dock.includes(a.pkg)).forEach(a => {
+    const r = el('div', 'li'); const b = el('button', 'btn sm', '+ Agregar'); b.onclick = () => saveDock([...S.dock, a.pkg]);
+    r.append(ico(a.pkg), el('div', 'n', a.label), b); A.appendChild(r);
+  });
+}
+
+// ---- Siri shortcuts ---------------------------------------------------------------------------------------------
+function copy(text){
+  const t = document.createElement('textarea'); t.value = text; t.style.position = 'fixed'; t.style.opacity = '0'; document.body.appendChild(t);
+  t.focus(); t.select(); t.setSelectionRange(0, text.length);
+  let ok = false; try { ok = document.execCommand('copy'); } catch(e){}
+  document.body.removeChild(t);
+  if (!ok) prompt('Copia esta dirección:', text); else toast('Dirección copiada');
+}
+function renderSiri(){
+  const L = $('#siriList'); L.textContent = '';
+  const acts = [
+    ['Reproducir / pausar', '/api/media?cmd=toggle'], ['Siguiente canción', '/api/media?cmd=next'], ['Canción anterior', '/api/media?cmd=prev'],
+    ['Subir volumen', '/api/volume?dir=up'], ['Bajar volumen', '/api/volume?dir=down'], ['Silenciar', '/api/volume?dir=mute'],
+    ['Ir al inicio', '/api/nav?action=home'], ['Atrás', '/api/nav?action=back']];
+  S.dock.forEach(p => { if (S.apps.some(a => a.pkg === p)) acts.push(['Abrir ' + label(p), '/api/launch?pkg=' + encodeURIComponent(p)]); });
+  acts.forEach(([name, path]) => {
+    const r = el('div', 'li'); const b = el('button', 'btn sm', 'Copiar'); b.onclick = () => copy(location.origin + q(path));
+    r.append(el('div', 'n', name), b); L.appendChild(r);
+  });
+}
+
+function render(){ renderApps(); renderWallpapers(); renderDock(); renderSiri(); }
+if (PIN) { $('#pin').value = PIN; enter(); }
+</script>
+</body>
+</html>

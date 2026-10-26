@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Casa — una pantalla de inicio propia para tu Google TV</title>
+<meta name="description" content="Casa es una pantalla de inicio ligera para Google TV: fondo a pantalla completa, dock inferior, y un panel web para cambiar fondos y apps desde tu celular.">
+<meta property="og:title" content="Casa para Google TV">
+<meta property="og:description" content="Una pantalla de inicio ligera, hecha a mano para una TV de 1 GB de RAM. Fondos y dock desde tu celular.">
+<meta property="og:image" content="assets/home.jpg">
+<style>
+:root{--bg:#070a14;--card:rgba(255,255,255,.06);--line:rgba(255,255,255,.12);--tx:#f3f5fb;--dim:#9ba4ba;--ac:#5b8cff}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--tx);font:17px/1.6 -apple-system,system-ui,"Segoe UI",Roboto,sans-serif}
+a{color:var(--ac)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+nav{position:sticky;top:0;z-index:5;background:#070a14cc;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:56px}
+nav b{font-size:19px;letter-spacing:.2px}
+nav a{color:var(--dim);text-decoration:none;margin-left:20px;font-size:15px}
+nav a:hover{color:var(--tx)}
+.hero{padding:64px 0 24px;text-align:center}
+.hero h1{font-size:clamp(40px,7vw,76px);line-height:1.04;margin:0 0 16px;font-weight:650;letter-spacing:-.02em}
+.hero p{max-width:640px;margin:0 auto 26px;color:var(--dim);font-size:19px}
+.btn{display:inline-block;padding:13px 22px;border-radius:14px;background:var(--ac);color:#fff;text-decoration:none;font-weight:600;margin:4px}
+.btn.ghost{background:var(--card);border:1px solid var(--line);color:var(--tx)}
+.shot{display:block;width:100%;border-radius:20px;border:1px solid var(--line);box-shadow:0 30px 80px #0009}
+.hero .shot{margin-top:36px}
+section{padding:56px 0}
+h2{font-size:clamp(26px,4vw,38px);margin:0 0 10px;letter-spacing:-.01em}
+.lead{color:var(--dim);max-width:680px;margin:0 0 30px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px}
+.card h3{margin:0 0 6px;font-size:18px}
+.card p{margin:0;color:var(--dim);font-size:15.5px}
+.two{display:grid;grid-template-columns:1.5fr 1fr;gap:22px;align-items:start}
+.phone{max-width:300px;margin:0 auto}
+.phone .shot{border-radius:30px;border:6px solid #1b2133}
+figcaption{color:var(--dim);font-size:14px;margin-top:10px;text-align:center}
+figure{margin:0}
+ol{padding-left:22px}
+li{margin:8px 0}
+code,pre{font:14px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace}
+code{overflow-wrap:anywhere}
+pre{background:#0d1222;border:1px solid var(--line);border-radius:14px;padding:16px;overflow:auto}
+.warn{border:1px solid #ffb74d55;background:#ffb74d12;border-radius:16px;padding:16px 18px;color:#ffd9a0}
+.small{color:var(--dim);font-size:14px}
+footer{border-top:1px solid var(--line);padding:30px 0 60px;color:var(--dim);font-size:14px}
+@media(max-width:760px){.two{grid-template-columns:1fr}nav a{margin-left:12px}}
+</style>
+</head>
+<body>
+<nav><div class="wrap"><b>Casa</b><div><a href="#hace">Qué hace</a><a href="#panel">Panel web</a><a href="#instalar">Instalar</a><a href="#limites">Límites</a></div></div></nav>
+
+<header class="hero wrap">
+  <h1>Tu TV, con una pantalla de inicio de verdad.</h1>
+  <p>Casa es una pantalla de inicio ligera para Google TV: una foto a pantalla completa, tus apps en una fila abajo y un panel web, con código QR, para controlarlo todo desde el iPhone.</p>
+  <a class="btn" href="#instalar">Cómo instalarla</a><a class="btn ghost" href="downloads/casa.apk" download>Descargar APK (<span id="sz">30</span> KB)</a>
+  <img class="shot" src="assets/home.jpg" alt="Pantalla de inicio de Casa en una TV: foto de una isla volcánica, reloj arriba a la izquierda, y cinco apps en una fila abajo" width="1280" height="720">
+  <p class="small" style="margin-top:12px">Foto: «Aerial image of Stromboli» de Carsten Steger, CC BY-SA 4.0, vía Wikimedia Commons.</p>
+</header>
+
+<section id="hace"><div class="wrap">
+  <h2>Qué hace</h2>
+  <p class="lead">Está hecha para una TV con 1 GB de RAM, así que no usa librerías y casi no consume: el APK pesa unos 30 KB.</p>
+  <div class="cards">
+    <div class="card"><h3>Fondo a pantalla completa</h3><p>Fotos que rotan cada hora, o una fija. Pon las que quieras, sin límite de cantidad.</p></div>
+    <div class="card"><h3>Dock inferior</h3><p>Tus apps favoritas en una fila; la enfocada crece y muestra su nombre. Abajo se abre «todas las apps».</p></div>
+    <div class="card"><h3>Lo que suena</h3><p>Una cápsula arriba muestra la carátula, el título y el avance de lo que reproduzcan Spotify, YouTube Music u otra app. OK pausa o reanuda.</p></div>
+    <div class="card"><h3>Panel web</h3><p>Abre una página desde tu celular (QR y PIN) para controlar la TV, cambiar fondos y ordenar el dock.</p></div>
+    <div class="card"><h3>No rompe nada</h3><p>No desactiva el launcher de Google ni toca el Wi-Fi: un servicio de accesibilidad trae Casa al frente al pulsar Home.</p></div>
+  </div>
+  <figure style="margin-top:34px"><img class="shot" src="assets/nowbar.jpg" alt="Casa con la cápsula de lo que suena arriba a la derecha" loading="lazy"><figcaption>La cápsula de «lo que suena», aquí con una canción de prueba. Foto: «Charles River Esplanade» de King of Hearts, CC BY-SA 4.0, vía Wikimedia Commons.</figcaption></figure>
+  <div class="two" style="margin-top:34px">
+    <figure><img class="shot" src="assets/apps.jpg" alt="Segunda pantalla de Casa con la cuadrícula de todas las apps" loading="lazy"><figcaption>«Todas las apps» aparece al pulsar Abajo.</figcaption></figure>
+    <figure class="phone" id="panel"><img class="shot" src="assets/panel.jpg" alt="Panel web de Casa en un celular, con la galería de fondos" loading="lazy"><figcaption>El panel, desde el celular.</figcaption></figure>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>El panel web y el iPhone</h2>
+  <p class="lead">La TV sirve una página en tu red local. Escaneas el código QR que aparece en la TV (pulsa Abajo en el Home) con la cámara del iPhone y entras sin escribir nada.</p>
+  <div class="cards">
+    <div class="card"><h3>Control</h3><p>Reproducir, pausar, siguiente, volumen, Inicio y Atrás, y toda tu lista de apps para abrirlas en la TV.</p></div>
+    <div class="card"><h3>Fondos</h3><p>Sube fotos desde el celular, incluidas las del iPhone: se enderezan y se reducen antes de enviarse. Fija una, rota todas, o borra.</p></div>
+    <div class="card"><h3>Dock</h3><p>Sube, baja, quita o agrega apps. El cambio se ve al instante.</p></div>
+    <div class="card"><h3>Siri y Atajos</h3><p>Copia una dirección, pégala en la acción «Obtener contenido de URL» de Atajos, y di «Oye Siri, Netflix en la tele».</p></div>
+    <div class="card"><h3>Como app en tu iPhone</h3><p>En Safari, Compartir → «Agregar a pantalla de inicio»: se abre a pantalla completa con su propio ícono.</p></div>
+    <div class="card"><h3>Local y con PIN</h3><p>Solo responde dentro de tu red. Tras 8 PIN incorrectos se bloquea un minuto. Va sin cifrar (http), como cualquier servicio local.</p></div>
+  </div>
+</div></section>
+
+<section id="instalar"><div class="wrap">
+  <h2>Instalar</h2>
+  <p class="lead">Necesitas una computadora en la misma red que la TV y ADB. Todo es reversible.</p>
+  <ol>
+    <li>En la TV: Ajustes → Preferencias del dispositivo → Acerca de → pulsa OK siete veces en «Compilación». Luego, en Opciones de desarrollador, activa la <b>Depuración inalámbrica</b>.</li>
+    <li>En la computadora, empareja y conecta con el código que muestra la TV:
+<pre>adb pair &lt;ip&gt;:&lt;puerto-de-emparejado&gt;
+adb connect &lt;ip&gt;:&lt;puerto&gt;</pre></li>
+    <li>Instala Casa, dale el permiso que le deja reactivar su propio servicio y permite que lea lo que suena:
+<pre>adb install -r casa.apk
+adb shell pm grant dev.joseo.casa android.permission.WRITE_SECURE_SETTINGS
+adb shell cmd notification allow_listener dev.joseo.casa/dev.joseo.casa.NowPlayingListener
+adb shell am start -n dev.joseo.casa/.HomeActivity</pre></li>
+    <li>Pulsa Home en el control. La primera vez, Casa activa su servicio de accesibilidad por sí sola.</li>
+    <li>Cuando termines, apaga la depuración inalámbrica en la TV.</li>
+  </ol>
+  <p class="small">APK compilado con la clave de depuración. SHA-256: <code id="sha">…</code></p>
+  <p class="small">Para quitarla: <code>adb uninstall dev.joseo.casa</code>. El launcher de Google nunca se desactiva.</p>
+</div></section>
+
+<section id="limites"><div class="wrap">
+  <h2>Límites honestos</h2>
+  <div class="warn">
+    <b>Probada en una sola TV:</b> Motorola Google TV (KTC «jagalchi», MediaTek, Android 14). En otras puede haber diferencias. Casa no desactiva paquetes del sistema; si quieres limpiar tu TV de anuncios y apps preinstaladas, mira <a href="https://github.com/Gathin23/cleanyourtv">CleanYourTV</a>, un proyecto aparte que inspiró esto. Casa no está afiliada a él ni a Google, Apple o Netflix.
+  </div>
+  <ul>
+    <li>No reemplaza Ajustes: los botones de Wi-Fi y Ajustes abren las pantallas del sistema.</li>
+    <li>El botón «Entradas» abre la app de Live TV de la TV.</li>
+    <li>Nada de lo que hace Casa sale de tu red: no hay cuentas, anuncios ni telemetría.</li>
+  </ul>
+</div></section>
+
+<footer><div class="wrap">
+  <p>Casa es de código abierto (MIT). Las fotos de los ejemplos son de Wikimedia Commons con licencia CC BY-SA 4.0; los créditos completos están en <code>wallpapers/CREDITS.md</code> del código fuente. «Netflix», «YouTube», «Disney+» y «Spotify» son marcas de sus dueños y aparecen solo como ejemplo de apps instaladas.</p>
+</div></footer>
+
+<script>
+fetch('downloads/casa.apk').then(r=>r.arrayBuffer()).then(async b=>{
+  document.getElementById('sz').textContent=Math.round(b.byteLength/1024);
+  const h=await crypto.subtle.digest('SHA-256',b);
+  document.getElementById('sha').textContent=[...new Uint8Array(h)].map(x=>x.toString(16).padStart(2,'0')).join('');
+}).catch(()=>{});
+</script>
+</body>
+</html>
